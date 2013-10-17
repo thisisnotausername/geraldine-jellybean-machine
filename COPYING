@@ -1,0 +1,56 @@
+ Geraldine's
+    888           888 888         888
+    888  e88~~8e  888 888 Y88b  / 888-~88e   e88~~8e    /~~~8e  888-~88e
+    888 d888  88b 888 888  Y888/  888  888b d888  88b       88b 888  888
+    888 8888__888 888 888   Y8/   888  8888 8888__888  e88~-888 888  888
+|   88P Y888    , 888 888    Y    888  888P Y888    , C888  888 888  888
+ \__8"   "88___/  888 888   /     888-_88"   "88___/   "88_-888 888  888
+                          _/
+     e    e                        888      ,e,
+    d8b  d8b       /~~~8e   e88~~\ 888-~88e  "  888-~88e  e88~~8e
+   d888bdY88b          88b d888    888  888 888 888  888 d888  88b
+  / Y88Y Y888b    e88~-888 8888    888  888 888 888  888 8888__888
+ /   YY   Y888b  C888  888 Y888    888  888 888 888  888 Y888    ,
+/          Y888b  "88_-888  "88__/ 888  888 888 888  888  "88___/
+
+
+Copyright (c) 2013 Clint Rogers & Geraldine Hurley
+
+I. Licence governing the code:
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are
+    met:
+
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above
+      copyright notice, this list of conditions and the following disclaimer
+      in the documentation and/or other materials provided with the
+      distribution.
+    * Neither the name of the  nor the names of its
+      contributors may be used to endorse or promote products derived from
+      this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+    "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+    A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+    OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+    SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+    LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+    DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+    THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+    (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+II: Licence governing the assets:
+    All sounds, images and other ancillary data found in the ./gfx (except for
+    the backgrounds - please see the note below), ./bgm, or ./snd directories
+    is made availble for reuse in other projects under the terms of the Creative
+    Commons CC-BY-NC-SA license; more information may be found at
+    http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US .
+
+    As an exception to the above, the large space backdrops in ./gfx/background
+    in the initial commit are all modified Hubble images, and as they began life
+    in the public domain, they should still be considered as such - all I did was
+    crop and/or shrink them to texture-friendly sizes.
