@@ -150,6 +150,13 @@ void COMMON_glprint(GL_FONT font, GLfloat x, GLfloat y, GLfloat z, GLfloat size,
 /*****************************************************************************/
 /*!
  * @brief OpenGL-friendly replacement for draw_sprite().
+ *
+ * @param sprite The texture this sprite should have.
+ * @param x The horizontal component of this sprite's location in space.
+ * @param y The vertical component of this sprite's location in space.
+ * @param z The depth component of this sprite's location in space.
+ * @param w The width (in GL units) this sprite should be drawn with.
+ * @param h The height (in GL units) this sprite should be drawn with.
  */
 void COMMON_draw_sprite(GLTEXTURE sprite, float  x, float  y, float  z, int w, int h)
 {
@@ -197,6 +204,16 @@ void COMMON_draw_sprite(GLTEXTURE sprite, float  x, float  y, float  z, int w, i
 /*****************************************************************************/
 /*!
  * @brief OpenGL-friendly replacement for draw_lit_sprite().
+ *
+ * @param sprite The texture this sprite should have.
+ * @param x The horizontal component of this sprite's location in space.
+ * @param y The vertical component of this sprite's location in space.
+ * @param z The depth component of this sprite's location in space.
+ * @param top_left How intensely the top left corner is to be lit.
+ * @param top_right How intensely the top right corner is to be lit.
+ * @param bot_left How intensely the bottom left corner is to be lit.
+ * @param bot_right How intensely the bottom left corner is to be lit.
+ * @bug Only white lighting is supported currently.
  */
 void COMMON_draw_lit_sprite(GLTEXTURE sprite, float  x, float  y, float  z, int w, int h,
     GLfloat top_left, GLfloat top_right, GLfloat bot_right, GLfloat bot_left)
@@ -291,6 +308,8 @@ void COMMON_draw_lit_sprite(GLTEXTURE sprite, float  x, float  y, float  z, int 
 /*****************************************************************************/
 /*!
  * @brief Prepare the sound, music, input, timer and graphics subsystems for use.
+ * @param use_fullscreen Whether the game should attempt to go fullscreen, or
+ *      display itself in a window.
  */
 void COMMON_setup(int use_fullscreen)
 {
@@ -388,7 +407,8 @@ void COMMON_setup(int use_fullscreen)
 }
 
 /*****************************************************************************/
-/*! @brief glflush() everything and copy the current contents of the double
+/*!
+ * @brief glflush() everything and copy the current contents of the double
  * buffer to the display.
  *
  * We also poll the music player and handle volume fades here. This is because
