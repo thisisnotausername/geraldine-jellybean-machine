@@ -13,6 +13,12 @@ void UNLOCKED_load(void)
     char buf[HOME_PATH_LENGTH + 19]; // ".jellybean_unlocked" is 19 characters long
     FILE *fin;
 
+    // make sure the first level defaults to unlocked, no matter what.
+    if (unlockables[UNLOCKS_EASY]   < 1) unlockables[UNLOCKS_EASY]   = 1;
+    if (unlockables[UNLOCKS_MEDIUM] < 1) unlockables[UNLOCKS_MEDIUM] = 1;
+    if (unlockables[UNLOCKS_HARD]   < 1) unlockables[UNLOCKS_HARD]   = 1;
+
+    // actually try to load the file.
     snprintf(buf, sizeof(buf) - 1, "%s/%s", common_user_home_path, SAVEGAME_FILENAME);
     fin = fopen(buf, "rb");
 
@@ -27,11 +33,6 @@ void UNLOCKED_load(void)
     unlockables[UNLOCKS_HARD]   = (char)fgetc(fin);
 
     fclose(fin);
-
-    // make sure the first level is unlocked, no matter what.
-    if (unlockables[UNLOCKS_EASY]   < 1) unlockables[UNLOCKS_EASY]   = 1;
-    if (unlockables[UNLOCKS_MEDIUM] < 1) unlockables[UNLOCKS_MEDIUM] = 1;
-    if (unlockables[UNLOCKS_HARD]   < 1) unlockables[UNLOCKS_HARD]   = 1;
 }
 
 /**************************************************************************************************/
