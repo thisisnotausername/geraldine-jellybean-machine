@@ -10,10 +10,11 @@
     #define  __ANNOUNCEMENTS_H
 
     #define  ANNOUNCEMENT_MINUS_TENTH_SEC   1
-    #define  ANNOUNCEMENT_COMBO             2
-    #define  ANNOUNCEMENT_2_COLS            3
-    #define  ANNOUNCEMENT_2_DIRS            4
-    #define  ANNOUNCEMENT_SQUARE            5
+    #define  ANNOUNCEMENT_MINUS_FOUR        2
+    #define  ANNOUNCEMENT_COMBO             3
+    #define  ANNOUNCEMENT_2_COLS            4
+    #define  ANNOUNCEMENT_2_DIRS            5
+    #define  ANNOUNCEMENT_SQUARE            6
 
     /*!
      * @file This module grew by accretion and as such, has hilariously-bad code.
@@ -27,5 +28,5 @@
     void ANCMT_tick(void);
     void ANCMT_draw(void);
     void ANCMT_spawn(int which, int combo_length, int added_time);
-    void ANCMT_spawn_time_lost(void);
+    void ANCMT_spawn_time_lost(int one_or_four);
 #endif

@@ -76,7 +76,7 @@ void gameplay_handle_next_level(void)
     if (gameplay_prev_outcome == GAMEPLAY_OUTCOME_WON)
     {
         gameplay_curr_level++;
-        unlockables[puzgrid_get_difficulty_level()] = gameplay_curr_level;      DUH_WHERE_AM_I("curr level: %d", gameplay_curr_level);
+        unlockables[puzgrid_get_difficulty_level()] = gameplay_curr_level;
         UNLOCKED_save();
     }
 

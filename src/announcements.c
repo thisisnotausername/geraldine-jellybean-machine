@@ -59,6 +59,7 @@ void ANCMT_reset_combo(void);
  * @{
  */
 #define MINUS_TIME_GFX_PATH                     "./gfx/announcement/minus_one.pcx"
+#define MINUS_FOUR_GFX_PATH                     "./gfx/announcement/minus_four.pcx"
 #define NUM_TIME_LOST_SPRITES                   64
 #define TIME_LOST_WIDTH                         128
 #define TIME_LOST_HEIGHT                        64
@@ -73,15 +74,17 @@ typedef struct
     int x;
     int y;
     int time_to_live;
+    int one_or_four;
 } TIME_LOST_SPRITE;
 
 TIME_LOST_SPRITE ancmt_time_lost_pool[NUM_TIME_LOST_SPRITES];
 
 GLTEXTURE ancmt_minus_time_gfx;
+GLTEXTURE ancmt_minus_four_gfx;
 
 void ANCMT_load_time_lost(void);
 void ANCMT_unload_time_lost(void);
-void ANCMT_spawn_time_lost(void);
+void ANCMT_spawn_time_lost(int one_or_four);
 void ANCMT_tick_time_lost(void);
 void ANCMT_draw_time_lost(void);
 void ANCMT_reset_time_lost(void);
@@ -122,27 +125,32 @@ void ANCMT_unload_combo(void)
 }
 
 /******************************************************************************************/
-/*! @brief Load the time-lost image. Should be considered private to this module.
+/*! @brief Load the time-lost images. Should be considered private to this module.
  */
 void ANCMT_load_time_lost(void)
 {
     if (!exists(MINUS_TIME_GFX_PATH))
         OH_SMEG("missing image: %s", MINUS_TIME_GFX_PATH);
     ancmt_minus_time_gfx = COMMON_load_texture(MINUS_TIME_GFX_PATH);
+
+    if (!exists(MINUS_FOUR_GFX_PATH))
+        OH_SMEG("missing image: %s", MINUS_FOUR_GFX_PATH);
+    ancmt_minus_four_gfx = COMMON_load_texture(MINUS_FOUR_GFX_PATH);
 }
 
 /******************************************************************************************/
-/*! @brief Unload the time-lost image. Should be considered private to this module.
+/*! @brief Unload the time-lost images. Should be considered private to this module.
  */
 void ANCMT_unload_time_lost(void)
 {
+    glDeleteTextures(1, &ancmt_minus_four_gfx);
     glDeleteTextures(1, &ancmt_minus_time_gfx);
 }
 
 /******************************************************************************************/
 /*! @brief Launches a '-0.1 sec' sprite. Should be considered private to this module.
  */
-void ANCMT_spawn_time_lost(void)
+void ANCMT_spawn_time_lost(int one_or_four)
 {
     static int index;
 
@@ -150,6 +158,7 @@ void ANCMT_spawn_time_lost(void)
     ancmt_time_lost_pool[index].x            = ANCMT_TLOST_HORZ_POS + ANCMT_TLOST_HORZ_RAND;
     ancmt_time_lost_pool[index].y            = ANCMT_TLOST_VERT_POS;
     ancmt_time_lost_pool[index].time_to_live = ANCMT_TLOST_TIME_TO_LIVE;
+    ancmt_time_lost_pool[index].one_or_four  = one_or_four;
 
     // remember where we are in the pool
     index++;
@@ -322,15 +331,24 @@ void ANCMT_draw_time_lost(void)
 
             glColor3f(intensity, intensity, intensity);
 
-            COMMON_draw_sprite(ancmt_minus_time_gfx,
-                ancmt_time_lost_pool[index].x, ancmt_time_lost_pool[index].y, -1,
-                TIME_LOST_WIDTH, TIME_LOST_HEIGHT);
+            if (ancmt_time_lost_pool[index].one_or_four)
+            {
+                COMMON_draw_sprite(ancmt_minus_four_gfx,
+                    ancmt_time_lost_pool[index].x, ancmt_time_lost_pool[index].y, -1,
+                    TIME_LOST_WIDTH, TIME_LOST_HEIGHT);
+            }
+            else
+            {
+                COMMON_draw_sprite(ancmt_minus_time_gfx,
+                    ancmt_time_lost_pool[index].x, ancmt_time_lost_pool[index].y, -1,
+                    TIME_LOST_WIDTH, TIME_LOST_HEIGHT);
+            }
         }
     }
 }
 
 /******************************************************************************************/
-/*! @brief Draw all the time-lost sprites. Should be considered private to this module.
+/*! @brief Draw all the combo announcement sprites. Should be considered private to this module.
  */
 void ANCMT_draw_combo(void)
 {
@@ -427,7 +445,11 @@ void ANCMT_spawn(int which, int combo_length, int added_time)
     switch(which)
     {
         case ANNOUNCEMENT_MINUS_TENTH_SEC:
-            ANCMT_spawn_time_lost();
+            ANCMT_spawn_time_lost(FALSE);
+        break;
+
+        case ANNOUNCEMENT_MINUS_FOUR:
+            ANCMT_spawn_time_lost(TRUE);
         break;
 
         case ANNOUNCEMENT_COMBO:

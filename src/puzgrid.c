@@ -271,7 +271,20 @@ void puzgrid_rotate_reticled_gems(int left_or_right)
 
     puzgrid_combo_length = 0;
     puzgrid_animation_clock = PUZGRID_ANIM_CLOCK_START_VAL;
-    ANCMT_spawn_time_lost();
+
+    // check if the princess is in the reticle; if she is, it costs more time
+    if  ((puzgrid_gems[puzgrid_reticle_y - 1][puzgrid_reticle_x - 1] == PUZGRID_PLAYER) ||
+         (puzgrid_gems[puzgrid_reticle_y - 1][puzgrid_reticle_x]     == PUZGRID_PLAYER) ||
+         (puzgrid_gems[puzgrid_reticle_y][puzgrid_reticle_x - 1]     == PUZGRID_PLAYER) ||
+         (puzgrid_gems[puzgrid_reticle_y][puzgrid_reticle_x]         == PUZGRID_PLAYER))
+    {
+        ANCMT_spawn_time_lost(TRUE);
+        GMCLK_add(-3);
+    }
+    else
+    {
+        ANCMT_spawn_time_lost(FALSE);
+    }
 
     if(left_or_right)
     {

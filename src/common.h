@@ -16,7 +16,7 @@
 * /          Y888b  "88_-888  "88__/ 888  888 888 888  888  "88___/
 *
 *
-* Copyright (c) 2013 Clint Rogers & Geraldine Hurley
+* Copyright (c) 2013, 2014 Clinton Rogers
 *
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are
