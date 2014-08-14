@@ -69,7 +69,6 @@ int main(void)
                 COMMON_flip_buffer();
             }
 
-            yield_timeslice();
 // #else
 /*            if(common_time_for_logic)
             {
