@@ -133,7 +133,7 @@ int puzgrid_check_player_at_exit(void)
 
 int puzgrid_get_difficulty_level(void)
 {
-    return puzgrid_difficulty;
+    return puzgrid_difficulty - PUZGRID_EASY;
 }
 
 /**************************************************************************************************/

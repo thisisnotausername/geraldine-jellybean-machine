@@ -95,7 +95,6 @@ void MAINMENU_check_highlighted(void)
  */
 void MAINMENU_init()
 {
-
     // populate the table of what's unlocked from the savegame
     UNLOCKED_load();
 
@@ -208,7 +207,7 @@ void MAINMENU_tick()
                     break;
 
                     case 1:
-                        DUH_WHERE_AM_I("unlockables[%d] = \x1b[34m%d\x1b[0m",mmenu_difficulty - PUZGRID_EASY,unlockables[mmenu_difficulty - PUZGRID_EASY]);
+
                         mmenu_difficulty++;
                         if (mmenu_difficulty > PUZGRID_HARD)
                             mmenu_difficulty = PUZGRID_EASY;
@@ -238,7 +237,7 @@ void MAINMENU_tick()
                     break;
 
                     case 2:
-                        DUH_WHERE_AM_I("unlockables[%d] = \x1b[31m%d\x1b[0m",mmenu_difficulty - PUZGRID_EASY,unlockables[mmenu_difficulty - PUZGRID_EASY]);
+
                         if (left_clicked == 1)
                             gameplay_curr_level++;
                         if (right_clicked == 1)

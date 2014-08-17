@@ -2,7 +2,7 @@
 
 #define     SAVEGAME_FILENAME   ".jellybean_unlocked"
 
-char unlockables[NUM_UNLOCK_DIFFICULTIES];
+unsigned char unlockables[NUM_UNLOCK_DIFFICULTIES];
 
 /**************************************************************************************************/
 /*!

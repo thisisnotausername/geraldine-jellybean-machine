@@ -9,7 +9,7 @@
     #define     UNLOCKS_MEDIUM              1
     #define     UNLOCKS_HARD                2
 
-    extern char unlockables[NUM_UNLOCK_DIFFICULTIES];
+    extern unsigned char unlockables[NUM_UNLOCK_DIFFICULTIES];
 
     void UNLOCKED_load(void);
     void UNLOCKED_save(void);
