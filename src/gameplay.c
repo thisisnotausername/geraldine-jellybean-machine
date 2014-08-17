@@ -1,7 +1,7 @@
 #include    "gameplay.h"
 
 #define     GAMEPLAY_PUZZLE_SLIDE_IN_START      -512
-#define     GAMEPLAY_PUZZLE_SLIDE_IN_END        (int)(80 * (common_aspect_ratio / ((float)DISPLAY_WIDTH / (float)DISPLAY_HEIGHT)))
+#define     GAMEPLAY_PUZZLE_SLIDE_IN_END        (int)(80.0f * common_aspect_ratio)
 #define     GAMEPLAY_PUZZLE_SLIDE_IN_STEP       8
 #define     GAMEPLAY_PUZZLE_YVAL                48
 
