@@ -15,6 +15,7 @@
     #define  ANNOUNCEMENT_2_COLS            4
     #define  ANNOUNCEMENT_2_DIRS            5
     #define  ANNOUNCEMENT_SQUARE            6
+    #define  ANNOUNCEMENT_4_OR_MORE         7
 
     /*!
      * @file This module grew by accretion and as such, has hilariously-bad code.

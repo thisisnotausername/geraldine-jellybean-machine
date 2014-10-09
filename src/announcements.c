@@ -6,6 +6,8 @@
 
 #include "announcements.h"
 
+#define ANNOUNCEMENT_SPECIAL_DELAY_TIME     15
+
 /******************************************************************************************/
 /*! @defgroup combo_sprite_stuff
  * @brief This is all the stuff used for creating, animating and drawing the
@@ -14,6 +16,7 @@
  */
 #define TWO_COLS_GFX_PATH                 "./gfx/announcement/2colours.pcx"
 #define TWO_DIRS_GFX_PATH                 "./gfx/announcement/2directions.pcx"
+#define FOUR_OR_MORE_GFX_PATH             "./gfx/announcement/fourormore.pcx"
 #define SQUARE_GFX_PATH                   "./gfx/announcement/square.pcx"
 #define COMBO_GFX_PATH                    "./gfx/announcement/%1dcombo.pcx"
 #define NUM_COMBO_SPRITES                 32
@@ -42,6 +45,7 @@ GLTEXTURE ancmt_combo_gfx[NUM_COMBO_IMGS];
 GLTEXTURE ancmt_2cols_gfx;
 GLTEXTURE ancmt_2dirs_gfx;
 GLTEXTURE ancmt_square_gfx;
+GLTEXTURE ancmt_4ormore_gfx;
 
 void ANCMT_load_combo(void);
 void ANCMT_unload_combo(void);
@@ -107,6 +111,7 @@ void ANCMT_load_combo(void)
     ancmt_2cols_gfx     = COMMON_load_texture(TWO_COLS_GFX_PATH);
     ancmt_2dirs_gfx     = COMMON_load_texture(TWO_DIRS_GFX_PATH);
     ancmt_square_gfx    = COMMON_load_texture(SQUARE_GFX_PATH);
+    ancmt_4ormore_gfx   = COMMON_load_texture(FOUR_OR_MORE_GFX_PATH);
 }
 
 /******************************************************************************************/
@@ -122,6 +127,7 @@ void ANCMT_unload_combo(void)
     glDeleteTextures(1, &ancmt_2cols_gfx);
     glDeleteTextures(1, &ancmt_2dirs_gfx);
     glDeleteTextures(1, &ancmt_square_gfx);
+    glDeleteTextures(1, &ancmt_4ormore_gfx);
 }
 
 /******************************************************************************************/
@@ -213,15 +219,19 @@ void ANCMT_spawn_special(int which)
     switch (which)
     {
         case ANNOUNCEMENT_2_COLS:
-            ancmt_special_pool[index].time_to_live += 16;
+            ancmt_special_pool[index].time_to_live += ANNOUNCEMENT_SPECIAL_DELAY_TIME;
         break;
 
         case ANNOUNCEMENT_2_DIRS:
-            ancmt_special_pool[index].time_to_live += 32;
+            ancmt_special_pool[index].time_to_live += ANNOUNCEMENT_SPECIAL_DELAY_TIME * 2;
         break;
 
         case ANNOUNCEMENT_SQUARE:
-            ancmt_special_pool[index].time_to_live += 48;
+            ancmt_special_pool[index].time_to_live += ANNOUNCEMENT_SPECIAL_DELAY_TIME * 3;
+        break;
+
+        case ANNOUNCEMENT_4_OR_MORE:
+            ancmt_special_pool[index].time_to_live += ANNOUNCEMENT_SPECIAL_DELAY_TIME * 3;
         break;
     }
 
@@ -412,6 +422,12 @@ void ANCMT_draw_combo(void)
                         ancmt_special_pool[index].x, ancmt_special_pool[index].y, -1,
                         COMBO_WIDTH, COMBO_HEIGHT);
                 break;
+
+                case ANNOUNCEMENT_4_OR_MORE:
+                    COMMON_draw_sprite(ancmt_4ormore_gfx,
+                        ancmt_special_pool[index].x, ancmt_special_pool[index].y, -1,
+                        COMBO_WIDTH, COMBO_HEIGHT);
+                break;
             }
         }
     }
@@ -459,6 +475,7 @@ void ANCMT_spawn(int which, int combo_length, int added_time)
         case ANNOUNCEMENT_2_COLS:
         case ANNOUNCEMENT_2_DIRS:
         case ANNOUNCEMENT_SQUARE:
+        case ANNOUNCEMENT_4_OR_MORE:
             ANCMT_spawn_special(which);
         break;
     }

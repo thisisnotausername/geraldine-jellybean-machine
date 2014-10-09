@@ -56,6 +56,7 @@
 
     extern int puzgrid_combo_length;
     extern int puzgrid_num_colours_matched;
+    extern int puzgrid_four_or_more_matched;
     extern int puzgrid_multi_directions_matched;
     extern int puzgrid_square_matched;
     extern int puzgrid_animation_clock;

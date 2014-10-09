@@ -322,6 +322,12 @@ void gameplay_handle_playing(void)
                     ANCMT_spawn(ANNOUNCEMENT_2_DIRS, 0, 0);
                     GMCLK_add(4);
                 }
+
+                if (puzgrid_four_or_more_matched)
+                {
+                    ANCMT_spawn(ANNOUNCEMENT_4_OR_MORE, 0, 0);
+                    GMCLK_add(2);
+                }
             }
 
             if(puzgrid_remove_matched_gems())

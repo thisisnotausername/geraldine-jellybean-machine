@@ -58,6 +58,7 @@ int puzgrid_combo_length = 0;
 int puzgrid_num_colours_matched = 0;
 int puzgrid_multi_directions_matched = 0;
 int puzgrid_square_matched = 0;
+int puzgrid_four_or_more_matched = 0;
 
 /*!
  * @brief An array that holds where the blocks in the current gem grid
@@ -1051,6 +1052,7 @@ int puzgrid_check_for_matches(void)
     int num_colours = 0;
     int x_index, y_index;
     int prev_match_colour = 0;
+    int num_gems_matched = 0;
 
     for(y_index = 0; y_index < PUZGRID_SIZE; y_index++)
     {
@@ -1078,8 +1080,21 @@ int puzgrid_check_for_matches(void)
                         puzgrid_remove[y_index + 2][x_index]  = 1;
                         got_match_down = TRUE;
 
-                        if(prev_match_colour != colour_to_match)
+                        // did we get matches in more than one colour?
+                        if (prev_match_colour != colour_to_match)
+                        {
+                            // yes
                             num_colours++;
+                        }
+
+                        if (num_colours == 1)
+                        {
+                            // have we matched more than 3 gems of the same colour?
+                            if (num_gems_matched < 3)
+                                num_gems_matched = 3;
+                            else
+                                num_gems_matched++;
+                        }
 
                         prev_match_colour = colour_to_match;
                     }
@@ -1102,8 +1117,21 @@ int puzgrid_check_for_matches(void)
                         puzgrid_remove[y_index][x_index + 2]  = 1;
                         got_match_across = TRUE;
 
-                        if(prev_match_colour != colour_to_match)
+                        // did we get matches in more than one colour?
+                        if (prev_match_colour != colour_to_match)
+                        {
+                            // yes
                             num_colours++;
+                        }
+
+                        if (num_colours == 1)
+                        {
+                            // have we matched more than 3 gems of the same colour?
+                            if (num_gems_matched < 3)
+                                num_gems_matched = 3;
+                            else
+                                num_gems_matched++;
+                        }
 
                         prev_match_colour = colour_to_match;
                     }
@@ -1145,6 +1173,7 @@ int puzgrid_check_for_matches(void)
     puzgrid_num_colours_matched = num_colours;
     puzgrid_multi_directions_matched =  is_l_or_cross;
     puzgrid_square_matched = is_square;
+    puzgrid_four_or_more_matched = ((num_gems_matched >= 4) && (!puzgrid_multi_directions_matched));
 
     return retval;
 }
