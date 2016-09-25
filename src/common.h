@@ -1,22 +1,23 @@
 /******************************************************************************
 *
-*  Geraldine's
-*     888           888 888         888
-*     888  e88~~8e  888 888 Y88b  / 888-~88e   e88~~8e    /~~~8e  888-~88e
-*     888 d888  88b 888 888  Y888/  888  888b d888  88b       88b 888  888
-*     888 8888__888 888 888   Y8/   888  8888 8888__888  e88~-888 888  888
-* |   88P Y888    , 888 888    Y    888  888P Y888    , C888  888 888  888
-*  \__8"   "88___/  888 888   /     888-_88"   "88___/   "88_-888 888  888
-*                           _/
-*      e    e                        888      ,e,
-*     d8b  d8b       /~~~8e   e88~~\ 888-~88e  "  888-~88e  e88~~8e
-*    d888bdY88b          88b d888    888  888 888 888  888 d888  88b
-*   / Y88Y Y888b    e88~-888 8888    888  888 888 888  888 8888__888
-*  /   YY   Y888b  C888  888 Y888    888  888 888 888  888 Y888    ,
-* /          Y888b  "88_-888  "88__/ 888  888 888 888  888  "88___/
+* 
+*  _____      _          _____ _             
+* |_   _|    | |        |_   _| |            
+*   | | _ __ | |_ ___     | | | |__   ___    
+*   | || '_ \| __/ _ \    | | | '_ \ / _ \   
+*  _| || | | | || (_) |   | | | | | |  __/   
+*  \___/_| |_|\__\___/    \_/ |_| |_|\___|   
+*                                            
+*                                            
+*         _____ _      _                     
+*        /  ___| |  /\| |/\                  
+*  ______\ `--.| |_ \ ` ' / _ __ ___ ______  
+* |______|`--. \ __|_     _| '__/ __|______| 
+*        /\__/ / |_ / , . \| |  \__ \        
+*        \____/ \__|\/|_|\/|_|  |___/        
+*                                        
 *
-*
-* Copyright (c) 2013, 2014 Clinton Rogers
+* Copyright (c) 2013 - 2016 Clinton Rogers
 *
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are
@@ -47,7 +48,7 @@
 * (please see the file COPYING in the top-level directory for more info)
 *
 * Some things to be aware of:
-* - Requires Allegro 4.2.x or 4.4.x (it will not build with 5.x),
+* - Requires Allegro 5.x or 4.4.x (it will not build with 5.x),
 *   AllegroGL 0.4.x or higher and DUMB 0.9.x.
 *
 * - This code grew by accretion, rather than by grand design; a lot of it
@@ -58,10 +59,10 @@
 #include        <stdio.h>
 #include        <stdint.h>
 #include        <stdlib.h>
+#include		<errno.h>
 #include        <math.h>
-#include        <allegro.h>
-#include        <aldumb.h>
-#include        <alleggl.h>
+#include 		<allegro5/allegro.h>
+#include 		<allegro5/allegro_opengl.h>
 
 #ifndef         _WIN32
     #include    <unistd.h>
@@ -176,9 +177,9 @@
     extern int             common_next_state;
     extern int             common_next_state_param;
     extern int             common_have_joysticks;
-    extern volatile int    common_time_for_logic;
     extern GL_FONT         common_gamefont;
     extern char            common_user_home_path[];
+    extern ALLEGRO_EVENT_QUEUE *common_event_queue;
 
     void    COMMON_setup(int use_fullscreen);
     GLuint  COMMON_load_texture(const char *filename);
