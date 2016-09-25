@@ -917,7 +917,7 @@ void puzgrid_load_map(const char *filename)
 
     if(exists(filename))
     {
-        tmp = load_bitmap(filename, NULL);
+        tmp = al_load_bitmap(filename, NULL);
 
         // read actual map
         for(y_index = 0; y_index < PUZGRID_SIZE; y_index++)

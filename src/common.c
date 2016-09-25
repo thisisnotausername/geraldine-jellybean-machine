@@ -431,16 +431,16 @@ GLuint COMMON_load_texture(const char *filename)
     int format;
     GLuint ret_val;
 
-    BITMAP *b;
+    ALLEGRO_BITMAP *b;
     set_color_depth(24);
     set_color_conversion(COLORCONV_KEEP_ALPHA);
 
     if (exists(filename))
-        b = load_bitmap(filename,NULL);
+        b = al_load_bitmap(filename,NULL);
     else
     {
         OH_SMEG("missing image: %s", filename);
-        b = create_bitmap_ex(24,1,1);
+        b = al_create_bitmap_ex(24,1,1);
         putpixel(b,0,0,makecol24(0,255,0));
     }
 
