@@ -35,54 +35,28 @@ float           common_effective_display_width;
 
 char            common_user_home_path[HOME_PATH_LENGTH];
 
+ALLEGRO_EVENT_QUEUE *common_event_queue = NULL;
+
 GLuint          texture_name = 1;
 GLuint          common_gamefont;
+
+static ALLEGRO_DISPLAY 		*common_display_priv = NULL;
+static ALLEGRO_DISPLAY_MODE	common_displaymode_priv;
+static ALLEGRO_TIMER			*common_timer_priv = NULL;
 
 /******************************************************************************/
 /*!
  * @brief Reports how many frames we were able to draw in the last second.
  * It is bound to a timer and should never be called manually.
  */
-void sample_framerate(void)
+/*void sample_framerate(void)
 {
     common_frames_per_sec  = common_frames_this_sec;
     common_frames_this_sec = 0;
 }
 END_OF_FUNCTION(sample_framerate);
+*/
 
-/******************************************************************************/
-/*!
- * @brief Advances the game logic at least one tick, or more if a repaint takes too
- * long. Called automatically as a timer task, should never be called manually.
- *
- * To use this:
- * In the game loop, we have something like
- * while(1)
- * {
- *      if(time_for_logic)
- *      {
- *          do_something_awesome();
- *          time_for_logic--;
- *          if(time_for_logic == 0)
- *          {
- *              draw_something_awesome();
- *          }
- *      }
- *      else
- *      {
- *          rest(1); // don't hog the cpu when not needed
- *      }
- * }
- */
-void game_heartbeat()
-{
-//#ifdef _WIN32
-    common_time_for_logic = 1;
-//#else
-//    common_time_for_logic++;
-//#endif
-}
-END_OF_FUNCTION(game_heartbeat);
 
 /******************************************************************************/
 /*! @brief Display a string at the specified location, in the specified font.
@@ -315,17 +289,57 @@ void COMMON_setup(int use_fullscreen)
 {
     srand((unsigned) time(NULL));
 
-    allegro_init();
-    install_allegro_gl();
-    install_sound(DIGI_AUTODETECT, MIDI_NONE, NULL);
-    install_keyboard();
-    install_mouse();
+    // Try to get various allegro components going
+    if ((!al_init()) || (!al_init_image_addon()) || (!al_install_audio())
+       || (!al_install_mouse()) || (!al_install_keyboard()) || (!al_init_acodec_addon())) 
+    {
+		DUH_WHERE_AM_I("FATAL: Could not initialize Allegro or one of its components.");
+		exit(ELIBACC);
+	}
+	
+    // Set up the heartbeat
+    common_timer_priv = al_create_timer(1.0f / (float)TICKS_PER_SEC);
+    
+    if (common_timer_priv == NULL)
+    {
+		DUH_WHERE_AM_I("FATAL: Could not start the Allegro timer subsystem.");
+		exit(ENOBUFS);
+	}
+			
+    // Try to set up the display and opengl context
+    al_set_new_display_flags(ALLEGRO_OPENGL | ALLEGRO_FULLSCREEN);
+    al_get_display_mode(al_get_num_display_modes() - 1, &common_displaymode_priv);
+    common_display_priv = al_create_display(common_displaymode_priv.width, common_displaymode_priv.height);
 
-    if(install_joystick(JOY_TYPE_AUTODETECT) == 0)
-        common_have_joysticks = TRUE;
+	if (common_display_priv == NULL)
+    {
+		DUH_WHERE_AM_I("FATAL: Could not create display.");
+		exit(ENOBUFS);
+	}
 
-    atexit(&dumb_exit);
-    dumb_register_stdfiles();
+	// Store the aspect ratio, in case we need to fix up mouse coords later
+    common_aspect_ratio = (float)common_displaymode_priv.width / (float)common_displaymode_priv.height;
+    common_effective_display_width =
+        DISPLAY_WIDTH * (common_aspect_ratio / ((float)DISPLAY_WIDTH / (float)DISPLAY_HEIGHT));
+	
+
+    // Set the font
+    if(exists(FONT_PATH))
+    {
+        common_gamefont = COMMON_load_texture(FONT_PATH);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    }
+
+    // Set some basic GL settings for speed, looks
+    glFogf(GL_FOG_MODE, GL_LINEAR);
+    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
+    glHint(GL_FOG_HINT, GL_FASTEST);
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+    glAlphaFunc(GL_GREATER, 0.5);
+
+/*    if(install_joystick(JOY_TYPE_AUTODETECT) == 0)
+        common_have_joysticks = TRUE; */
 
     // Get user's home directory and where we're being run from
     // I hope this doesn't end up on tdwtf, but I have no idea what else to do...
@@ -335,7 +349,7 @@ void COMMON_setup(int use_fullscreen)
     // Workaround defective WMs/DEs that don't automatically change to the right
     // directory if we're double-clicked (yes, you, LXDE, you piece of sh...)
     char EXE_PATH_TMP[HOME_PATH_LENGTH];
-    get_executable_name(EXE_PATH_TMP, HOME_PATH_LENGTH - 1);
+    get_executable_name(EXE_PATH_TMP, HOME_PATH_LENGTH - 1);   // this might need to change.
     chdir((char *) dirname(EXE_PATH_TMP));
 #else
 #ifdef _WIN32
@@ -343,67 +357,17 @@ void COMMON_setup(int use_fullscreen)
 #endif
 #endif
 
-    // Set up the display.
-    // Compute the correct aspect ratio for the user's display.
-    int width_tmp;
-    int height_tmp;
-
-    if((!use_fullscreen) || (get_desktop_resolution(&width_tmp, &height_tmp) != 0))
-    {
-        width_tmp  = DISPLAY_WIDTH;
-        height_tmp = DISPLAY_HEIGHT;
-    }
-
-    common_aspect_ratio = (float)width_tmp / (float)height_tmp;
-    common_effective_display_width =
-        DISPLAY_WIDTH * (common_aspect_ratio / ((float)DISPLAY_WIDTH / (float)DISPLAY_HEIGHT));
-
-    // Choose a colour depth.
-    if(desktop_color_depth() != 0)
-        set_color_depth(desktop_color_depth());
-    else
-        set_color_depth(16);
-
-    // Suggest a good screen mode for OpenGL.
-    allegro_gl_set(AGL_Z_DEPTH, get_color_depth());
-    allegro_gl_set(AGL_COLOR_DEPTH, get_color_depth());
-    allegro_gl_set(AGL_FULLSCREEN, use_fullscreen);
-    allegro_gl_set(AGL_DOUBLEBUFFER, TRUE);
-    allegro_gl_set(AGL_SUGGEST,
-        AGL_FULLSCREEN | AGL_DOUBLEBUFFER | AGL_Z_DEPTH | AGL_COLOR_DEPTH);
-
-    // Set the graphics mode.
-    set_gfx_mode(GFX_OPENGL, DISPLAY_WIDTH, DISPLAY_HEIGHT, 0, 0);
-
-    // Set the font
-    if(exists(FONT_PATH))
-    {
-        common_gamefont = COMMON_load_texture(FONT_PATH);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    }
-
-    // Set some basic GL settings for speed
-    glFogf(GL_FOG_MODE, GL_LINEAR);
-    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
-    glHint(GL_FOG_HINT, GL_FASTEST);
-
     // Set up the heartbeat
     common_time_for_logic = 0;
-    LOCK_VARIABLE(common_time_for_logic);
-    LOCK_FUNCTION(game_heartbeat);
+    common_timer_priv = al_create_timer(1.0f / (float)TICKS_PER_SEC);
 
-    install_int_ex(game_heartbeat, BPS_TO_TIMER(TICKS_PER_SEC));
-
-    // Set up the performance timer
+/*    // Set up the performance timer
     LOCK_VARIABLE(common_frames_per_sec);
     LOCK_VARIABLE(common_frames_this_sec);
     LOCK_FUNCTION(sample_framerate);
 
     install_int_ex(sample_framerate,BPS_TO_TIMER(1));
-
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-    glAlphaFunc(GL_GREATER, 0.5);
+*/
 }
 
 /*****************************************************************************/
