@@ -46,7 +46,7 @@ ALLEGRO_SAMPLE  *puzgrid_match1_smp = NULL;
 ALLEGRO_SAMPLE  *puzgrid_match2_smp = NULL;
 ALLEGRO_SAMPLE  *puzgrid_match3_smp = NULL;
 ALLEGRO_SAMPLE  *puzgrid_match4_smp = NULL;
-ALLEGRO_SAMPLE  *puzgrid_match5_smp = NULL;
+ALLEGRO_SAMPLE  *puzgrid_match5_smp = NULL; 
 ALLEGRO_SAMPLE  *puzgrid_rotate_smp = NULL;
 
 PUZZLE_GRID puzgrid_gems;
@@ -476,7 +476,6 @@ void puzgrid_draw_reticle(void)
         PUZGRID_TILE_SIZE_IN_PX * 2 + 3, PUZGRID_TILE_SIZE_IN_PX * 2 + 3);
 
     glDisable(GL_BLEND);
-
 }
 
 /**************************************************************************************************/
@@ -489,7 +488,7 @@ void puzgrid_load_assets(void)
     else
     {
         DUH_WHERE_AM_I("missing sound: ./snd/rotate.wav");
-        puzgrid_rotate_smp = create_sample(8, 0, 1, 1);
+        puzgrid_rotate_smp = al_create_sample(NULL, 0, 1, ALLEGRO_AUDIO_DEPTH_INT8, ALLEGRO_CHANNEL_CONF_1, FALSE);
     }
 
     if(exists("./snd/match1.wav"))
@@ -497,7 +496,7 @@ void puzgrid_load_assets(void)
     else
     {
         DUH_WHERE_AM_I("missing sound: ./snd/match1.wav");
-        puzgrid_match1_smp = create_sample(8, 0, 1, 1);
+        puzgrid_match1_smp = al_create_sample(NULL, 0, 1, ALLEGRO_AUDIO_DEPTH_INT8, ALLEGRO_CHANNEL_CONF_1, FALSE);
     }
 
     if(exists("./snd/match2.wav"))
@@ -505,7 +504,7 @@ void puzgrid_load_assets(void)
     else
     {
         DUH_WHERE_AM_I("missing sound: ./snd/match2.wav");
-        puzgrid_match2_smp = create_sample(8, 0, 1, 1);
+        puzgrid_match2_smp = al_create_sample(NULL, 0, 1, ALLEGRO_AUDIO_DEPTH_INT8, ALLEGRO_CHANNEL_CONF_1, FALSE);
     }
 
     if(exists("./snd/match3.wav"))
@@ -513,7 +512,7 @@ void puzgrid_load_assets(void)
     else
     {
         DUH_WHERE_AM_I("missing sound: ./snd/match3.wav");
-        puzgrid_match3_smp = create_sample(8, 0, 1, 1);
+        puzgrid_match3_smp = al_create_sample(NULL, 0, 1, ALLEGRO_AUDIO_DEPTH_INT8, ALLEGRO_CHANNEL_CONF_1, FALSE);
     }
 
     if(exists("./snd/match4.wav"))
@@ -521,7 +520,7 @@ void puzgrid_load_assets(void)
     else
     {
         DUH_WHERE_AM_I("missing sound: ./snd/match4.wav");
-        puzgrid_match4_smp = create_sample(8, 0, 1, 1);
+        puzgrid_match4_smp = al_create_sample(NULL, 0, 1, ALLEGRO_AUDIO_DEPTH_INT8, ALLEGRO_CHANNEL_CONF_1, FALSE);
     }
 
     if(exists("./snd/match5.wav"))
@@ -529,7 +528,7 @@ void puzgrid_load_assets(void)
     else
     {
         DUH_WHERE_AM_I("missing sound: ./snd/match5.wav");
-        puzgrid_match5_smp = create_sample(8, 0, 1, 1);
+        puzgrid_match5_smp = al_create_sample(NULL, 0, 1, ALLEGRO_AUDIO_DEPTH_INT8, ALLEGRO_CHANNEL_CONF_1, FALSE);
     }
 
     // Load the images, creating a 'dummy' one if a file is missing.
