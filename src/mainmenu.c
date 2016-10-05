@@ -26,10 +26,10 @@ GLTEXTURE mmenu_item_highlight;
 int mmenu_internal_state;
 
 #define MM_CLICK_SOUND_PATH    "./snd/rotate.wav"
-SAMPLE *mmenu_click;
+ALLEGRO_SAMPLE *mmenu_click;
 
 #define MM_START_SOUND_PATH    "./snd/start.wav"
-SAMPLE *mmenu_start;
+ALLEGRO_SAMPLE *mmenu_start;
 
 int mmenu_anim_clock;
 int mmenu_difficulty = PUZGRID_EASY;
@@ -116,8 +116,8 @@ void MAINMENU_load()
 {
     mmenu_logotype          = COMMON_load_texture(LOGOTYPE_PATH);
     mmenu_item_highlight    = COMMON_load_texture(HIGHLIGHT_PATH);
-    mmenu_click             = load_sample(MM_CLICK_SOUND_PATH);
-    mmenu_start             = load_sample(MM_START_SOUND_PATH);
+    mmenu_click             = al_load_sample(MM_CLICK_SOUND_PATH);
+    mmenu_start             = al_load_sample(MM_START_SOUND_PATH);
 }
 
 /******************************************************************************************/

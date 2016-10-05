@@ -297,6 +297,15 @@ void COMMON_setup(int use_fullscreen)
 		exit(ELIBACC);
 	}
 	
+	// set up the sound mixer.  the # of reserved samples is hard-coded by
+	// design - don't touch this unless you know what you're doing.
+	if (!al_reserve_samples(16))
+	{
+		DUH_WHERE_AM_I("FATAL: Call to al_reserve_samples() failed.");
+		exit(ELIBACC);
+	}
+		
+	
     // Set up the heartbeat
     common_timer_priv = al_create_timer(1.0f / (float)TICKS_PER_SEC);
     
@@ -322,7 +331,6 @@ void COMMON_setup(int use_fullscreen)
     common_effective_display_width =
         DISPLAY_WIDTH * (common_aspect_ratio / ((float)DISPLAY_WIDTH / (float)DISPLAY_HEIGHT));
 	
-
     // Set the font
     if(exists(FONT_PATH))
     {
@@ -397,7 +405,8 @@ void COMMON_flip_buffer()
         al_poll_duh(common_duhplyr);
     }
 
-    allegro_gl_flip();
+	glFlush();
+    al_flip_display();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     common_frames_this_sec++;
 }
